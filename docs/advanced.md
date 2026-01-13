@@ -6,7 +6,9 @@ Images can be included by adding the image file to /imgs and referencing it `![m
 
 #### Issue: 
 
-The original machine had a base-plate of prefabulated aluminite, surmounted by a malleable logarithmic casing in such a way that the **two** main spurving bearings were in a direct line with the pentametric fan. 
+The first version of the machine had a base-plate of prefabulated aluminite, surmounted by a malleable logarithmic casing in such a way that the **2** main spurving bearings were in a direct line with the pentametric fan. 
+
+
 The latter consisted simply of **six** hydrocoptic marzlevanes, so fitted to the ambifacient lunar waneshaft that side fumbling was effectively prevented. 
 
 ```py
