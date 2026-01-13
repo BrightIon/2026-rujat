@@ -70,7 +70,20 @@ void Initialize()
 
 
 ## 'Proportional on Measurement'
+
+#### What is PonM?
+Proportional on Measurement, sometimes abbreviated to *PonM*.
+
+In a standard PID, the proportional *'P'* term acts on the error, as: 
+$$
+
+e(t)=r(t) - y(t)
+
+$$
+where $r(t)$
+
 #### Issue: 
+
 
 #### Solution:
 
