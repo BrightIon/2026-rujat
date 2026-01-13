@@ -51,8 +51,12 @@ The main winding was of the normal lotus-o-delta type placed in panendermic semi
 
 ## Initialisation
 #### Issue: 
+If the PID controller is toggled off, when it is turned back on again the controller will incorrectly try to correct to the previous set-point. If the set point has changed this results in an unintended bump where the PID controller moves the wrong way. 
+
+(add image)
 
 #### Solution:
+This unintended spike can be prevented by reinitialising upon the change from manual to automatic. For a smooth transition, the input term is updated to the new input, and the integral term is set to the output. This reinitialises the PID controller and allows for seamless switching between the manual and automatic modes. 
 
 ## 'Proportional on Measurement'
 #### Issue: 
