@@ -58,6 +58,17 @@ If the PID controller is toggled off, when it is turned back on again the contro
 #### Solution:
 This unintended spike can be prevented by reinitialising upon the change from manual to automatic. For a smooth transition, the input term is updated to the new input, and the integral term is set to the output. This reinitialises the PID controller and allows for seamless switching between the manual and automatic modes. 
 
+```py
+void Initialize()
+{
+   lastInput = Input;
+   ITerm = Output;
+   if(ITerm> outMax) ITerm= outMax;
+   else if(ITerm< outMin) ITerm= outMin;
+}
+```
+
+
 ## 'Proportional on Measurement'
 #### Issue: 
 
