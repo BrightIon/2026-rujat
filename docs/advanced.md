@@ -139,6 +139,8 @@ void Initialize()
 }
 ```
 
+![another_graph](https://lh4.googleusercontent.com/proxy/PdKNK7J0L224qK4AMzAmgUyJ4H_lZ7kN6NBPH_hXQxiJjYtomcRh82TmDftQVq6VvGySW1yUw5hKvtjuu1US00SQyMmpSR8IQww0djknFHA91u_XnMQdvIhzTCyg_Fsi)
+
 
 ## 'Proportional on Measurement'
 
