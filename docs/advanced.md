@@ -118,7 +118,7 @@ Another way to take care of the issue is to change the setpoint in gradual time 
 ## Tuning Changes
 #### Issue: When you try to change the parameters of the controller while it is running it can introduce artefacts. E.g. this little bump:
 
-![graph](http://brettbeauregard.com/blog/wp-content/uploads/2011/03/BadIntegral.png)
+![graph](imgs/BadIntegral.png)
 
 #### Solution:
 This issue occurs because when you change the value of $K_I$ the entire error sum is multiplied by the new  $K_I$ rather than the previous value of $K_I$. This causes a discontinuity because the correction due to the integral term changes abruptly.
