@@ -3,6 +3,18 @@ Here is where you'll add your mini-report. Create a new section with a 2nd level
 Images can be included by adding the image file to `/imgs` and referencing it `![my-label](imgs/my_image.png)`.
 Code can also be included, please put it in a suitably named `/implementations/my_thing` directory.
 
+## A Spreadsheet IIR Controller
+Excel (or equivalent) can do PID control too!
+I present the [Infinite Impulse Response SPREADSHEET](https://bit.ly/fbnl26iir)
+
+The output $y_0$ is the sum of 5 terms, 3 feed-**forward** components based on the most recent 3 inputs ($x_0, x_1, x_2$), and 2 feed-**back** components based on the previous outputs ($y_1, y_2$). In the diagram the $z^{-1}$ boxes represent time delay, and triangles are digital amplification.
+
+![biquad circuit](imgs/biquad.png)
+
+There are some equations defining the 'process response' (i.e. how x depends on y) and cells to adjust the 5 branch gains. When adequately tuned the spreadsheet can demonstrate compliance to a varying setpoint with some minor ringing.
+
+![80 steps example](imgs/iir_80steps.png)
+
 ## Vulcan - a bakeout oven controller
 To safely bake UHV components and chambers, a feedback controlled oven is used to smoothly an slowly ramp up, hold steady, and ramp down the temperature of an oven.
 
