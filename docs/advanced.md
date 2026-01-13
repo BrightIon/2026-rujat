@@ -185,7 +185,7 @@ To see this, we consider an example. Imagine a man driving at 70mph on a motorwa
 If the issue of manual toggle has not been suitably planned for, this can cause a dangerous issue. When the cruise control mechanism was turned off, the PID system was frozen in the internal state it had at that moment. This means that the actuator is giving an output appropriate to 70mph, not 80mph. In this context, this means the car will have a sudden drop in speed and a dangerously quick decceleration.
 
 #### Solution:
-
+We need a "bumpless" transfer back to using the PID control system. This means we would like the throttle to match the new actuator output at the moment we switch the PID back on so there is a smooth transfer. To do this, set your integration term, $I$ to $I = u_{\text{manual}} - P - D$ such that $u_{PID}$ is the same as our throttle value. Then let the PID control system run as it should. Overall, this is like resetting the system.
 
 
 ## Initialisation
