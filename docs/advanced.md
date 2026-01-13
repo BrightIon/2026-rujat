@@ -46,13 +46,18 @@ we can see that a spike in $\dot{e}(t)$ leads to a spike in out control  variabl
 This rapid spike can lead to issues such as hardware stress, instability and a reduction in controller performance.
 
 #### Solution:
-Since it is the derivative part of the PID equation that is causing this issue, we can take care of it by making changes to it. One way of doing so it simply taking the derivative of setpoint out of the PID equation. So, except for the short time interval when the setpoint is changing, its derivative with respect to time will be zero, i.e.:
+Since the derivative term of the PID equation is causing this issue, we should think about making changes to it. 
+Notice that, except for the short time interval when the setpoint is changing, its derivative with respect to time will be zero, i.e.:
 
 $\text{For constant Setpoint: }\frac{d(\text{Setpoint})}{dt}=0$
 
+Since we are not really interested in the PID equation for the transient phase, we can set the derivative term as follows:
+
 $\implies \frac{d(\text{Error})}{dt} = -\frac{d(\text{Input})}{dt}$
 
-By making this modification in the derivative part of PID equation, we can get rid of the "derivative kicks".
+By making this modification, we can get rid of the "derivative kicks".
+
+Another way to take care of the issue is to change the setpoint in gradual time steps. This makes the derivative more manageable and we can still keep it in the PID equation while getting rid of the spikes. However, there will be the obvious tradeoff with how fast the setpoint can change.
 
 ## Tuning Changes
 #### Issue: When you try to change the parameters of the controller while it is running it can introduce artefacts. E.g. this little bump:
