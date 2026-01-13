@@ -28,6 +28,61 @@ The main winding was of the normal lotus-o-delta type placed in panendermic semi
 Unlike analogue circuits, digital circuits operate on the basis of some timed clock, where updates to the system occur regularly, instead of instantaneously. A specific sampling time is required to time updates in the PID controller.
 #### Solution:
 
+Several approaches to solve this issue exist. An approach suggested by Brett [1] works as follows:
+1. Define a variable `SampleTime`.
+2. When the PID controller function is called, it checks whether the difference between current time `now` and the previous time `lastTime` is greater than or equal to the `SampleTime`, it will update the output of the PID controller. And hence, it updates the error.
+3. Otherwise, it does nothing.
+
+The code below implements the process described above.
+```cpp
+unsigned long lastTime;
+double Input, Output, Setpoint;
+double errSum, lastErr;
+double kp, ki, kd;
+int SampleTime = 1000; //1 sec
+void Compute()
+{
+   unsigned long now = millis();
+   int timeChange = (now - lastTime);
+   if(timeChange>=SampleTime)
+   {
+      /*Compute all the working error variables*/
+      double error = Setpoint - Input;
+      errSum += error;
+      double dErr = (error - lastErr);
+ 
+      /*Compute PID Output*/
+      Output = kp * error + ki * errSum + kd * dErr;
+ 
+      /*Remember some variables for next time*/
+      lastErr = error;
+      lastTime = now;
+   }
+}
+```
+
+The problem with the code above is that it relies on the user calling the compute function in a timely manner to begin evaluating the error. This could be avoided by utilizing an interrupt module/systemcall to have the function `Compute` called at regular specific time intervals, eliminating the need for the user to time the calling. The updated code below has the `newCompute` function that shall be linked to an interrupt within the operating system/microcontroller you are using.
+
+```cpp
+unsigned long lastTime;
+double Input, Output, Setpoint;
+double errSum, lastErr;
+double kp, ki, kd;
+void newCompute()
+{
+    /*Compute all the working error variables*/
+    double error = Setpoint - Input;
+    errSum += error;
+    double dErr = (error - lastErr);
+
+    /*Compute PID Output*/
+    Output = kp * error + ki * errSum + kd * dErr;
+
+    /*Remember some variables for next time*/
+    lastErr = error;
+    lastTime = now;
+}
+```
 
 
 ## Derivative Kick
