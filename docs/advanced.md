@@ -212,8 +212,7 @@ void Initialize()
 
 ## 'Proportional on Measurement'
 
-#### What is PonM?
-Proportional on Measurement, sometimes abbreviated to *PonM*.
+#### What is *Proportional on Measurement* (PonM)?
 
 In a standard PID, the proportional *'P'* term acts on the error, as: 
 $$
@@ -221,11 +220,31 @@ $$
 e(t)=r(t) - y(t)
 
 $$
-where $r(t)$
+where $r(t)$ is the setpoint and $y(t)$ is the measured output. 
+The standard proportional term is expressed via:
+$$
+P(t) =K_p(r(t)-y(t))=K_pe(t)
 
-#### Issue: 
+$$
+However, using PonM instead, $P$ acts directly on the measurement as:
+$$
+P(t) = -K_p y(t)
+$$
+Therefore, $P$ no longer responds to the setpoint error directly. 
 
+
+
+#### Issue:
+The issue with proportional on error is that in integrating processes (where the PID output controls the rate of change of the input), overshoot is mathematically inevitable. As soon as an error exists, the integral term starts increasing. Then when the system reaches the setpoint, the proportional term becomes zero, so the integral term is the only thing contributing to the output. To get back to the balance point, the integral term has to decrease again- but it can only decrease if the error becomes negative, which means the input has to go above the setpoint. So overshoot ends up being unavoidable.
+
+In what situations might this be problematic?
+
+- Sous-vide
+- Linear slide
+- 3D printer extruder temperature
+
+Temperature control can be vital in these situations. Specifically, overshooting/ going above setpoint could result in overcooking food, ruining product quality, or damaging samples. 
 
 #### Solution:
-
+By switching to PonM, the proportional term stays non-zero (and negative) even at the setpoint, because it depends on the measurement rather than the error. This means the integral term no longer has to return to the balance point on its own. Since it doesn’t need to shrink back down, we don’t need to create negative error- and so overshoot isn’t required.
 
