@@ -106,7 +106,19 @@ And here is the result after "clamping" both integrator and output:
 ## Manual toggle
 #### Issue: 
 
+![plane manual toggle pic](image.png)
+
+![car manual toggle pic](image-1.png)
+
+Manual toggle is an issue that arises when a system changes from being manually controlled to being controlled by an automatic system.
+
+To see this, we consider an example. Imagine a man driving at 70mph on a motorway. He is using cruise control, an automatic mechanism which keeps him at 70mph. Let's say he turns off cruise control and drives manually. He accelerates to 80mph and drives for a bit. He then switches cruise control back on.
+
+If the issue of manual toggle has not been suitably planned for, this can cause a dangerous issue. When the cruise control mechanism was turned off, the PID system was frozen in the internal state it had at that moment. This means that the actuator is giving an output appropriate to 70mph, not 80mph. In this context, this means the car will have a sudden drop in speed and a dangerously quick decceleration.
+
 #### Solution:
+
+
 
 ## Initialisation
 #### Issue: 
