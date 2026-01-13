@@ -30,8 +30,9 @@ Unlike analogue circuits, digital circuits operate on the basis of some timed cl
 
 Several approaches to solve this issue exist. An approach suggested by Brett [1] works as follows:
 1. Define a variable `SampleTime`.
-2. When the PID controller function is called, it checks whether the difference between current time `now` and the previous time `lastTime` is greater than or equal to the `SampleTime`, it will update the output of the PID controller. And hence, it updates the error.
-3. Otherwise, it does nothing.
+2. When the PID controller function is called, it compares the difference between current time `now` and the previous time `lastTime` to the `SampleTime`.
+3. If (`now` - `lastTime`) >= `SampleTime`, the system will update the output of the PID controller. And hence, it updates the error and restarts the time.
+4. Otherwise, it does nothing.
 
 The code below implements the process described above.
 ```cpp
@@ -61,13 +62,17 @@ void Compute()
 }
 ```
 
-The problem with the code above is that it relies on the user calling the compute function in a timely manner to begin evaluating the error. This could be avoided by utilizing an interrupt module/systemcall to have the function `Compute` called at regular specific time intervals, eliminating the need for the user to time the calling. The updated code below has the `newCompute` function that shall be linked to an interrupt within the operating system/microcontroller you are using.
+The problem with the code above is that it relies on the user calling the compute function in a timely manner to begin evaluating the error. This could be avoided by utilizing an interrupt module/systemcall to have the function `Compute` called at regular specific time intervals, eliminating the need for the user to time the calling. The updated code below has the `newCompute` function that shall be linked to an interrupt within the operating system/microcontroller you are using. The code below uses hardware interrupts on arduino microcontroller.
 
-```cpp
+```arduino
+
+#include <avr/interrupt.h>
+
 unsigned long lastTime;
 double Input, Output, Setpoint;
 double errSum, lastErr;
 double kp, ki, kd;
+
 void newCompute()
 {
     /*Compute all the working error variables*/
@@ -82,6 +87,36 @@ void newCompute()
     lastErr = error;
     lastTime = now;
 }
+
+
+
+
+ISR(TIMER1_COMPA_vect) {
+  newCompute();
+}
+
+void setup() {
+  cli();  // disable interrupts
+
+  TCCR1A = 0;
+  TCCR1B = 0;
+  TCNT1  = 0;
+
+  // 16 MHz / 64 prescaler = 250 kHz
+  // 250 kHz * 0.005 s = 1250 counts
+  OCR1A = 1249;
+
+  TCCR1B |= (1 << WGM12);  // CTC mode
+  TCCR1B |= (1 << CS11) | (1 << CS10); // prescaler 64
+  TIMSK1 |= (1 << OCIE1A); // enable interrupt
+
+  sei();  // enable interrupts
+}
+
+void loop() {
+  // main loop runs freely
+}
+
 ```
 
 
