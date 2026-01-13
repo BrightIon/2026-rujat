@@ -54,8 +54,40 @@ This rapid spike can lead to issues such as hardware stress, instability and a r
 
 ## Reset Windup
 #### Issue: 
+Reset Windup refers to the case when the PID controller tries to do adjust for out of bound errors, e.i the PID tries to get to some "unrealistic" values thinking it can. This results in anomalous lags to the input controller.
+![windup](imgs/Windup.png)
 
-#### Solution:
+#### Solution: 
+To solve this issue we can tell the PID what the limits are, and once it reached them it will stop integrating. The proportional and the derivative terms will also contribute to the lag, hence we also need to bound the output value.
+Here we can see an example of code that would limit the values: 
+```py 
+#limit integrator
+      if(ITerm> outMax) ITerm= outMax;
+      else if(ITerm< outMin) ITerm= outMin;
+```
+```py
+#limit output
+      if(Output > outMax) Output = outMax;
+      else if(Output < outMin) Output = outMin;
+```     
+Here the user is allowed to change the limits  of the values for integrator and output:
+```py
+void SetOutputLimits(double Min, double Max)
+{
+   if(Min > Max) return;
+   outMin = Min;
+   outMax = Max;
+    
+   if(Output > outMax) Output = outMax;
+   else if(Output < outMin) Output = outMin;
+ 
+   if(ITerm> outMax) ITerm= outMax;
+   else if(ITerm< outMin) ITerm= outMin;
+}
+```  
+And here is the result after "clamping" both integrator and output: 
+![nowindup](imgs/No-Winup-Clamped.png)
+
 
 ## Manual toggle
 #### Issue: 
