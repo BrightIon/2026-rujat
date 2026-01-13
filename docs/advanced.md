@@ -31,6 +31,19 @@ The main winding was of the normal lotus-o-delta type placed in panendermic semi
 
 ## Derivative Kick
 #### Issue: 
+When we encounter a sharp change in the setpoint, the derivitive term in our control function also spikes sharply due to the rapid change. To see this, consider
+
+$$e(t)=r(t)-y(t),$$
+$$\dot{e}(t)=\dot{r}(t)-\dot{y}(t).$$
+
+So for finite $\dot{y}(t)$, 
+$$(\dot{r}(t) \rightarrow \infty) \Rightarrow (\dot{e}(t) \rightarrow \infty). $$
+
+Looking at our control function,
+$$u(t)=K_{p} \ e(t)+K_{i} \int_{0}^{t}e(\tau) \ d\tau \ +K_{d} \ \dot{e}(t),$$
+we can see that a spike in $\dot{e}(t)$ leads to a spike in out control  variable $u(t)$, assuming a non-negligible $K_{d}$ value.
+
+This rapid spike can lead to issues such as hardware stress, instability and a reduction in controller performance.
 
 #### Solution:
 
