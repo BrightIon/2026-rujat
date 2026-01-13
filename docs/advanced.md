@@ -23,8 +23,9 @@ The main winding was of the normal lotus-o-delta type placed in panendermic semi
 
 ## Sample Time
 #### Issue: 
-
+Unlike analogue circuits, digital circuits operate on the basis of some timed clock, where updates to the system occur regularly, instead of instantaneously. A specific sampling time is required to time updates in the PID controller.
 #### Solution:
+
 
 
 ## Derivative Kick
