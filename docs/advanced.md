@@ -48,9 +48,23 @@ This rapid spike can lead to issues such as hardware stress, instability and a r
 #### Solution:
 
 ## Tuning Changes
-#### Issue: 
+#### Issue: When you try to change the parameters of the controller while it is running it can introduce artefacts. E.g. this little bump:
+
+![graph](http://brettbeauregard.com/blog/wp-content/uploads/2011/03/BadIntegral.png)
 
 #### Solution:
+This issue occurs because when you change the value of $K_I$ the entire error sum is multiplied by the new  $K_I$ rather than the previous value of $K_I$. This causes a discontinuity because the correction due to the integral term changes abruptly.
+
+This isn't an issue for proportional or derivative gain because they don't have any memory so there is no discontinuity.
+
+There is a simple solution, instead of tracking just the sum of the historical errors, you store the sum of $(e\times K_I)$
+
+
+
+When implemented in analogue electronics with an op-amp circuit $K_I$ is already included in the integral. This is because the voltage across the capacitor is $\frac{1}{C}\int i(t) dt$ and $i(t)$ is given by $\frac{v_i(t)}{R_{\text{int}}(t)}$. This gives $\frac{1}{C}\int \frac{v_i(t)}{R_{\text{int}}(t)} dt$ which includes $R_{\text{int}}$ inside the integral.
+
+![circuit](imgs/Capture.PNG)
+Integrator Circuit
 
 ## Reset Windup
 #### Issue: 
